@@ -3,6 +3,8 @@ import AddImages from './AddImages';
 
 export default function CreateForm() {
   const fileToDataUrl = file => {
+    const fileEl = document.querySelector('[data-id=file]');
+    
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
     
@@ -15,6 +17,8 @@ export default function CreateForm() {
       });
       
       fileReader.readAsDataURL(file);
+
+      fileEl.value = '';
     });
   }
 
@@ -22,7 +26,7 @@ export default function CreateForm() {
     const files = [...evt.target.files];
     const urls = await Promise.all(files.map(o => fileToDataUrl(o)));
     // У вас в массиве - dataUrl, можете использовать в качестве значения атрибута src тега img
-    
+
     setImages([
       ...images,
       ...urls,
@@ -43,7 +47,7 @@ export default function CreateForm() {
       <form className="imgForm">
         <div className="file-container">
           <span className="overlap">Click to select</span>
-          <input className="overlapped" type="file" accept="image/*" multiple onChange={handleSelect}/>
+          <input className="overlapped" data-id="file" type="file" accept="image/*" multiple onChange={handleSelect}/>
         </div>
       </form>
       
